@@ -18,7 +18,7 @@ module ActionView #:nodoc:
       # * <tt>:initialize</tt> - arguments to pass to the initialization method of your javascript class.
       # * <tt>:div_id</tt> - the DOM +id+ of the containing div itself. Defaults to <tt>"#{option[:id]}"_div</tt>
       def swf_tag(source, options={})
-        Generator.new(source, options, method(:swf_path)).generate
+        Generator.new(source, options, self).generate
       end
 
       # For compatibility with the older FlashObject.
@@ -41,13 +41,14 @@ module ActionView #:nodoc:
 private
       class Generator # :nodoc:
         VALID_MODES = [:static, :dynamic]
-        def initialize(source, options, swf_path_block)
-          @source = swf_path_block.call(source)
+        def initialize(source, options, view)
+          @view = view
+          @source = view.swf_path(source)
           @options = ActionView::Base.swf_default_options.merge(options)
           [:html_options, :parameters, :flashvars].each do |k|
             @options[k].merge! ActionView::Base.swf_default_options.merge[k] rescue "merge won't work for string or nil, ignore error"
           end
-          @options.reverse_merge!(ActionView::Base.swf_default_options).reverse_merge!(
+          @options.reverse_merge!(
             :id               => source.gsub(/^.*\//, '').gsub(/\.swf$/,''),
             :width            => "100%",
             :height           => "100%",
@@ -65,7 +66,7 @@ private
           )
           @options[:div_id] ||= @options[:id]+"_div"
           @options[:width], @options[:height] = @options[:size].scan(/^(\d*%?)x(\d*%?)$/).first if @options[:size]
-          @options[:auto_install] &&= swf_path_block.call(@options[:auto_install])
+          @options[:auto_install] &&= @view.swf_path(@options[:auto_install])
           if @options[:flashvars].is_a?(Hash)
             @options[:flashvars] = @options[:flashvars].map do |key_value|
               key_value.map{|val| CGI::escape(val.to_s)}.join("=")
@@ -87,10 +88,8 @@ private
           param_list = @options[:parameters].map{|k,v| %(<param name="#{k}" value="#{v}"/>) }.join("\n")
           param_list += %(\n<param name="flashvars" value="#{@options[:flashvars]}"/>) unless @options[:flashvars].empty?
           html_options = @options[:html_options].map{|k,v| %(#{k}="#{v}")}.join(" ")
-          r = <<-"EOS"
-            <script type="text/javascript">
-              swfobject.registerObject("#{@options[:id]}_container", "#{@options[:flash_version]}", #{@options[:auto_install].to_json});
-            </script>
+          r = @view.javascript_tag(%(swfobject.registerObject("#{@options[:id]}_container", "#{@options[:flash_version]}", #{@options[:auto_install].to_json});)) + <<-"EOS"
+            
             <div id="#{@options[:div_id]}"><object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="#{@options[:width]}" height="#{@options[:height]}" id="#{@options[:id]}_container" #{html_options}>
               <param name="movie" value="#{@source}" />
               #{param_list}
@@ -104,32 +103,23 @@ private
               <!--<![endif]-->
             </object></div>
           EOS
-          r += <<-"EOS" if @options[:javascript_class]
-            <script type="text/javascript">
-              #{extend_js}
-            </script>
-          EOS
+          r += @view.javascript_tag extend_js if @options[:javascript_class]
           r
         end
         
         def dynamic
-          @options[:parameters].merge!(:id => @options[:id])
+          @options[:html_options] = @options[:html_options].merge(:id => @options[:id])
           args = (([@source] + @options.values_at(:div_id,:width,:height,:flash_version)).map(&:to_s) + 
                   @options.values_at(:auto_install,:flashvars,:parameters,:html_options)
                  ).map(&:to_json).join(",")
-          r = <<-"EOS"
-            <script type="text/javascript">
-              swfobject.embedSWF(#{args});
-            </script>
+          r = @view.javascript_tag("swfobject.embedSWF(#{args})") 
+          r += <<-"EOS"
+          
             <div id="#{@options[:div_id]}">
               #{@options[:fallback_html]}
             </div>
           EOS
-          r += <<-"EOS" if @options[:javascript_class]
-            <script type="text/javascript">
-              swfobject.addDomLoadEvent(function(){#{extend_js}})
-            </script>
-          EOS
+          r += @view.javascript_tag("swfobject.addDomLoadEvent(function(){#{extend_js}})") if @options[:javascript_class]
           r
         end
         
@@ -138,12 +128,10 @@ private
         end
         
         def library_check
-          <<-"EOS"
-              <script type="text/javascript">
-                if (typeof swfobject == 'undefined') {
-                  document.getElementById('#{@options[:div_id]}').innerHTML = '<strong>Warning:</strong> SWFObject.js was not loaded properly. Make sure you <tt>&lt;%= javascript_include_tag :defaults %></tt> or <tt>&lt;%= javascript_include_tag :swfobject %></tt>';
-                }
-              </script>
+          @view.javascript_tag <<-"EOS"
+            if (typeof swfobject == 'undefined') {
+              document.getElementById('#{@options[:div_id]}').innerHTML = '<strong>Warning:</strong> SWFObject.js was not loaded properly. Make sure you <tt>&lt;%= javascript_include_tag :defaults %></tt> or <tt>&lt;%= javascript_include_tag :swfobject %></tt>';
+            }
           EOS
         end
       end #class Generator

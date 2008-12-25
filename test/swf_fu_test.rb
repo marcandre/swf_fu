@@ -3,9 +3,11 @@ require File.dirname(__FILE__)+'/results'
 
 class SwfFuTest < ActionView::TestCase
   def assert_same_stripped(expect, test)
-    expect, test = [expect, test].map{|s| s.split("\n").map(&:strip).join("\n")}
-    STDOUT << "\n\n---- Actual result: ----\n" << test << "\n---------\n" unless expect == test
-    assert_equal expect, test
+    expect, test = [expect, test].map{|s| s.split("\n").map(&:strip)}
+    same = expect & test
+    delta_expect, delta_test = [expect, test].map{|a| a-same}
+    STDOUT << "\n\n---- Actual result: ----\n" << test.join("\n") << "\n---------\n" unless delta_expect == delta_test
+    assert_equal delta_expect, delta_test
   end
 
   context "swf_path" do   
@@ -44,12 +46,11 @@ class SwfFuTest < ActionView::TestCase
       
   context "swf_tag" do
     COMPLEX_OPTIONS = { :width => "456", :height => 123,
-                        :flashvars => {:flashVar1 => "value 1 > 2", :flashVar2 => 42},
-                        :parameters => {:allowscriptaccess => "always", :play => true},
-                        :html_options => {:class => "lots", :style => "hot"},
+                        :flashvars => {:myVar => "value 1 > 2"}.freeze,
                         :javascript_class => "SomeClass",
-                        :initialize => {:be => "good", :eat => "well"}
-                      }
+                        :initialize => {:be => "good"}.freeze,
+                        :parameters => {:play => true}.freeze
+                      }.freeze
       
     should "understand size" do
       assert_equal  swf_tag("hello", :size => "123x456"),
@@ -83,7 +84,7 @@ class SwfFuTest < ActionView::TestCase
       end
 
       should "produce the expected code" do
-        assert_same_stripped STATIC_RESULT, swf_tag("mySwf", COMPLEX_OPTIONS)
+        assert_same_stripped STATIC_RESULT, swf_tag("mySwf", COMPLEX_OPTIONS.merge(:html_options => {:class => "lots"}.freeze).freeze)
       end
       
       teardown { ActionView::Base.swf_default_options = {} }

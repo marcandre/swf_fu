@@ -2,25 +2,23 @@
 
 With the swf_fu plugin, rails treats your swf files like any other asset (images, javascripts, etc...).
 
-swf_fu uses SWFObject 2.1 to embed swf objects in HTML and supports all its options.
+swf_fu (pronounced "swif-fu", bonus joke for french speakers) uses SWFObject 2.1 to embed swf objects in HTML and supports all its options.
 SWFObject 2 is such a nice library that Adobe now uses it as the official way to embed swf!
 SWFOBject's project can be found at http://code.google.com/p/swfobject
 
 swf_fu was inspired by FlashObject by Davide D'Agostino (http://www.lipsiasoft.com)
 and is and backward compatible with it (or can also be used together; see compatiblity notes at the end)
 
-swf_fu has been tested with rails up to v 2.2 and has good test coverage so <tt>rake test:plugins</tt> should reveal
-any incompatibility. Comments and pull requests welcome: http://github.com//marcandre/swf_fu
-Bug reports can be filed #todo
+Comments and pull requests welcome: http://github.com/marcandre/swf_fu
 
 == Install
 
 script/plugin install git://github.com/marcandre/swf_fu.git
 
 If you are still rails 2.0.2 or older, this won't work; you'll need to download
-swf_fu from http://github.com/marcandre/swf_fu and install it manually:
+swf_fu from http://github.com/marcandre/swf_fu and install it manually, like:
 
-  script/plugin install path/to/swf_fu
+  script/plugin install ~/Downloads/swf_fu
 
 == Usage
 
