@@ -6,7 +6,7 @@ dest = File.dirname(__FILE__)+"/../../../public"
 
 filename =  "#{dest}/javascripts/swfobject.js"
 unless File.exist?(filename)
-  FileUtils.cp "#{src}/javascripts/", filename
+  FileUtils.cp "#{src}/javascripts/swfobject.js", filename
   puts "Copying 'swfobject.js'"
 end
 
@@ -17,7 +17,7 @@ end
 
 filename = "#{dest}/swfs/expressInstall.swf"
 unless File.exist?(filename)
-  FileUtils.cp "#{src}/swfs/", filename 
+  FileUtils.cp "#{src}/swfs/expressInstall.swf", filename
   puts "Copying 'expressInstall.swf', the default flash auto-installer."
 end
 
