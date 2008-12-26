@@ -14,7 +14,7 @@ any incompatibility. Comments and pull requests welcome: http://github.com/marca
 
 == Install
 
-script/plugin install git://github.com/marcandre/swf_fu.git
+  script/plugin install git://github.com/marcandre/swf_fu.git
 
 If you are still rails 2.0.2 or older, this won't work; you'll need to download
 swf_fu from http://github.com/marcandre/swf_fu and install it manually, like:
