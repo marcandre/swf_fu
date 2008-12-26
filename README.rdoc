@@ -9,7 +9,8 @@ SWFOBject's project can be found at http://code.google.com/p/swfobject
 swf_fu was inspired by FlashObject by Davide D'Agostino (http://www.lipsiasoft.com)
 and is and backward compatible with it (or can also be used together; see compatiblity notes at the end)
 
-Comments and pull requests welcome: http://github.com/marcandre/swf_fu
+swf_fu has been tested with rails up to v2.2.2 and has good test coverage so <tt>rake test:plugins</tt> should reveal
+any incompatibility. Comments and pull requests welcome: http://github.com/marcandre/swf_fu
 
 == Install
 
