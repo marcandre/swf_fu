@@ -65,6 +65,7 @@ class SwfFuTest < ActionView::TestCase
       setup do
         test = {:flashvars=> {:xyz => "abc"}, :mode => :static, :size => "400x300"}
         @expect = swf_tag("test", test)
+        @expect_with_hello = swf_tag("test", :flashvars => {:xyz => "abc", :hello => "world"}, :mode => :static, :size => "400x300")
         ActionView::Base.swf_default_options = test
       end
       
@@ -72,6 +73,10 @@ class SwfFuTest < ActionView::TestCase
         assert_equal @expect, swf_tag("test")
       end
       
+      should "merge suboptions" do
+        assert_equal @expect_with_hello, swf_tag("test", :flashvars => {:hello => "world"})
+      end
+
       teardown { ActionView::Base.swf_default_options = {} }        
     end
 

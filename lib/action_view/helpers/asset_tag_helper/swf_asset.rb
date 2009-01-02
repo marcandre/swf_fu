@@ -1,5 +1,3 @@
-require 'action_view/helpers/asset_tag_helper'
-
 module ActionView #:nodoc:
 
   # <tt>ActionView::Base.swf_default_options</tt> is a hash that
