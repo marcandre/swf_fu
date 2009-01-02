@@ -78,7 +78,7 @@ If you _don't_ currently use FlashObject, congrats, you're done reading!
 
 If you _do_ use FlashObject, you can choose to:
 
-1) keep both. They won't interfere and flashobject_tag will continue to use the older SWFObject 1.5 library.
+1) keep both. They won't interfere and +flashobject_tag+ will continue to use the older SWFObject 1.5 library.
 
 2) remove FlashObject:
 
@@ -93,7 +93,7 @@ This should not have impacts as long as:
 * you don't use the javascript object before the page is loaded. SWFObject 2.1 makes the changes to the web page later
 * you don't rely on the +verify_file_exists+ option (it doesn't do anything anymore)
 
-In either case 1 or 2, you change existing calls to +flashobject_tag+ for +swf_tag+  at your leisure. 
+In either case 1 or 2, you change existing calls to +flashobject_tag+ for +swf_tag+ at your leisure. 
 The interface is similar and the main differences are some options name changes:
   :flash_id  => :id
   :variables => :flashvars
