@@ -1,5 +1,10 @@
 = swf_fu --- History
 
+== Version 1.0.1 - January 2, 2009
+
+* File reorganization
+* Bug fix for default options
+
 == Version 1.0 - X-mas, 2008
 
 === Initial release.
