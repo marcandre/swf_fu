@@ -11,14 +11,14 @@ module ActionView #:nodoc:
       # * <tt>:mode</tt> - Either :dynamic (default) or :static. Refer to SWFObject's doc[http://code.google.com/p/swfobject/wiki/documentation#Should_I_use_the_static_or_dynamic_publishing_method?]
       # * <tt>:flashvars</tt> - a Hash of variables that are passed to the swf. Can also be a string like <tt>"foo=bar&hello=world"</tt>
       # * <tt>:parameters</tt> - a Hash of configuration parameters for the swf. See Adobe's doc[http://kb.adobe.com/selfservice/viewContent.do?externalId=tn_12701#optional]
-      # * <tt>:fallback_html</tt> - HTML text that is displayed when the Flash player is not available. Defaults to a "Get Flash" image pointing to Adobe Flash's installation page.
+      # * <tt>:alt</tt> - HTML text that is displayed when the Flash player is not available. Defaults to a "Get Flash" image pointing to Adobe Flash's installation page.
       # * <tt>:flash_version</tt> - the version of the Flash player that is required (e.g. "7" (default) or "8.1.0")
       # * <tt>:auto_install</tt> - a swf file that will upgrade flash player if needed (defaults to "expressInstall" which was installed by swf_fu)
       # * <tt>:javascript_class</tt> - specify a javascript class (e.g. "MyFlash") for your flash object. The initialize method will be called when the flash object is ready.
       # * <tt>:initialize</tt> - arguments to pass to the initialization method of your javascript class.
       # * <tt>:div_id</tt> - the DOM +id+ of the containing div itself. Defaults to <tt>"#{option[:id]}"_div</tt>
-      def swf_tag(source, options={})
-        Generator.new(source, options, self).generate
+      def swf_tag(source, options={}, &block)
+        Generator.new(source, options, self).generate(&block)
       end
 
       # For compatibility with the older FlashObject.
@@ -58,7 +58,7 @@ module ActionView #:nodoc:
             :html_options     => {},
             :mode             => :dynamic,
             :auto_install     => "expressInstall",
-            :fallback_html    => <<-"EOS"
+            :alt    => <<-"EOS"
               <a href="http://www.adobe.com/go/getflashplayer">
             	  <img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" />
               </a>
@@ -80,11 +80,15 @@ module ActionView #:nodoc:
           end
         end
 
-        def generate
-          send(@mode) + (
-            'development' == ENV['RAILS_ENV'] ? library_check : ""
-          )
+        def generate(&block)
+          if block_given?
+            @options[:alt] = @view.capture(&block)
+            @view.concat(send(@mode) + library_check, block.binding)
+          else
+            send(@mode) + library_check
+          end
         end
+        
       private
         def static
           param_list = @options[:parameters].map{|k,v| %(<param name="#{k}" value="#{v}"/>) }.join("\n")
@@ -99,7 +103,7 @@ module ActionView #:nodoc:
               <object type="application/x-shockwave-flash" data="#{@source}" width="#{@options[:width]}" height="#{@options[:height]}" id="#{@options[:id]}">
               #{param_list}
               <!--<![endif]-->
-                #{@options[:fallback_html]}
+                #{@options[:alt]}
               <!--[if !IE]>-->
               </object>
               <!--<![endif]-->
@@ -120,7 +124,7 @@ module ActionView #:nodoc:
           r += <<-"EOS"
         
             <div id="#{@options[:div_id]}">
-              #{@options[:fallback_html]}
+              #{@options[:alt]}
             </div>
           EOS
           r += @view.javascript_tag("swfobject.addDomLoadEvent(function(){#{extend_js}})") if @options[:javascript_class]
@@ -140,6 +144,7 @@ module ActionView #:nodoc:
         end
       
         def library_check
+          return "" unless 'development' == ENV['RAILS_ENV']
           @view.javascript_tag <<-"EOS"
             if (typeof swfobject == 'undefined') {
               document.getElementById('#{@options[:div_id]}').innerHTML = '<strong>Warning:</strong> SWFObject.js was not loaded properly. Make sure you <tt>&lt;%= javascript_include_tag :defaults %></tt> or <tt>&lt;%= javascript_include_tag :swfobject %></tt>';

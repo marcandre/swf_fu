@@ -32,6 +32,12 @@ Exactly like images and javascripts, +swf_tag+ will use +swf_path+
 to determine the path of the swf file; it will assume it is in <tt>/public/swfs/</tt>
 unless specified otherwise and it will add the ".swf" extension automatically.
 
+You can specify alternate content either with the options :alt => "Get Flash!" or you can use swf_tag as a block:
+
+  <% swf_tag "i_like_flashing" do %>
+    Get Flash
+  <% end %>
+
 === Options
 
 * <tt>:id</tt> - the DOM +id+ of the flash +object+ element that is used to contain the Flash object; defaults to the name of the swf in +source+
@@ -40,7 +46,7 @@ unless specified otherwise and it will add the ".swf" extension automatically.
 * <tt>:mode</tt> - Either :dynamic (default) or :static. Refer to SWFObject's doc[http://code.google.com/p/swfobject/wiki/documentation#Should_I_use_the_static_or_dynamic_publishing_method?]
 * <tt>:flashvars</tt> - a Hash of variables that are passed to the swf. Can also be a string like <tt>"foo=bar&hello=world"</tt>
 * <tt>:parameters</tt> - a Hash of configuration parameters for the swf. See Adobe's doc[http://kb.adobe.com/selfservice/viewContent.do?externalId=tn_12701#optional]
-* <tt>:fallback_html</tt> - HTML text that is displayed when the Flash player is not available. Defaults to a "Get Flash" image pointing to Adobe Flash's installation page.
+* <tt>:alt</tt> - HTML text that is displayed when the Flash player is not available. Defaults to a "Get Flash" image pointing to Adobe Flash's installation page. This can also be specified as a block (see embedding section)
 * <tt>:flash_version</tt> - the version of the Flash player that is required (e.g. "7" (default) or "8.1.0")
 * <tt>:auto_install</tt> - a swf file that will upgrade flash player if needed (defaults to "expressInstall" which was installed by swf_fu)
 * <tt>:javascript_class</tt> - specify a javascript class (e.g. "MyFlash") for your flash object. The initialize method will be called when the flash object is ready.

@@ -1,5 +1,9 @@
 = swf_fu --- History
 
+== Version 1.1.0 - January 3, 2009
+
+* Improved the way to specify alternate content
+
 == Version 1.0.3 - January 3, 2009
 
 * Improved javascript initialization
