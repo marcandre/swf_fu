@@ -113,6 +113,14 @@ class SwfFuTest < ActionView::TestCase
       ), flashobject_tag("mySwf", :flash_id => "myFlash")
     end
   
+    should "be the same with custom settings" do
+      assert_same_stripped swf_tag("mySwf",
+        :auto_install     => nil,
+        :parameters       => {:scale => "noborder", :bgcolor => "#ffffff"},
+        :flashvars        => {:answer_is => 42},
+        :id               => "myFlash"
+      ), flashobject_tag("mySwf", :flash_id => "myFlash", :parameters => {:scale => "noborder"}, :variables => {:answer_is => 42})
+    end
   end
 end
 

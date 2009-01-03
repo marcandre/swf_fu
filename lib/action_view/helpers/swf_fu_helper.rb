@@ -67,6 +67,8 @@ module ActionView #:nodoc:
           @options[:div_id] ||= @options[:id]+"_div"
           @options[:width], @options[:height] = @options[:size].scan(/^(\d*%?)x(\d*%?)$/).first if @options[:size]
           @options[:auto_install] &&= @view.swf_path(@options[:auto_install])
+          # For some strange reason, SWFObject will only accept a string as parameters[:flashvars] and a hash as a direct argument (dynamic method)
+          # To allow both string and hash forms, we simply do our own conversion to string...
           if @options[:flashvars].is_a?(Hash)
             @options[:flashvars] = @options[:flashvars].map do |key_value|
               key_value.map{|val| CGI::escape(val.to_s)}.join("=")
@@ -109,6 +111,7 @@ module ActionView #:nodoc:
       
         def dynamic
           @options[:html_options] = @options[:html_options].merge(:id => @options[:id])
+          @options[:parameters][:flashvars] = @options.delete :flashvars
           args = (([@source] + @options.values_at(:div_id,:width,:height,:flash_version)).map(&:to_s) + 
                   @options.values_at(:auto_install,:flashvars,:parameters,:html_options)
                  ).map(&:to_json).join(",")
