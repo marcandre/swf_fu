@@ -101,6 +101,10 @@ class SwfFuTest < ActionView::TestCase
       end
       
     end
+    
+    should "treat initialize arrays as list of parameters" do
+      assert_match 'initialize("hello","world")', swf_tag("mySwf", :initialize => ["hello", "world"], :javascript_class => "SomeClass")
+    end
   end
 
   context "flashobject_tag" do

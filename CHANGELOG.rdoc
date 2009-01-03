@@ -1,5 +1,13 @@
 = swf_fu --- History
 
+== Version 1.0.3 - January 3, 2009
+
+* Improved javascript initialization
+
+  :initialize => [1, 2, 3]  # produces in javascript: obj.initialize(1,2,3) instead of ([1,2,3])
+  # no :initialize produces in javascript: obj.initialize() instead of (null)
+  :initialize => nil        # stil produces obj.initialize(null)
+
 == Version 1.0.2 - January 3, 2009
 
 * Bug fix for flashvars in dynamic method

@@ -111,6 +111,7 @@ module ActionView #:nodoc:
       
         def dynamic
           @options[:html_options] = @options[:html_options].merge(:id => @options[:id])
+          @options[:parameters] = @options[:parameters].dup # don't modify the original parameters
           @options[:parameters][:flashvars] = @options.delete :flashvars
           args = (([@source] + @options.values_at(:div_id,:width,:height,:flash_version)).map(&:to_s) + 
                   @options.values_at(:auto_install,:flashvars,:parameters,:html_options)
@@ -127,7 +128,15 @@ module ActionView #:nodoc:
         end
       
         def extend_js
-          "Object.extend($('#{@options[:id]}'), #{@options[:javascript_class]}.prototype).initialize(#{@options[:initialize].to_json})"
+          arglist = case
+          when @options[:initialize].instance_of?(Array) 
+            @options[:initialize].map(&:to_json).join(",")
+          when @options.has_key?(:initialize)
+            @options[:initialize].to_json
+          else
+            ""
+          end
+          "Object.extend($('#{@options[:id]}'), #{@options[:javascript_class]}.prototype).initialize(#{arglist})"
         end
       
         def library_check

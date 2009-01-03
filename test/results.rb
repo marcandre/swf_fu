@@ -1,7 +1,7 @@
 DYNAMIC_RESULT = <<"EOS"
 <script type="text/javascript">
 //<![CDATA[
-swfobject.embedSWF("/swfs/mySwf.swf","mySwf_div","456","123","7","/swfs/expressInstall.swf","myVar=value+1+%3E+2",{"play": true},{"id": "mySwf"})
+swfobject.embedSWF("/swfs/mySwf.swf","mySwf_div","456","123","7","/swfs/expressInstall.swf",null,{"play": true, "flashvars": "myVar=value+1+%3E+2"},{"id": "mySwf"})
 //]]>
 </script>
 <div id="mySwf_div">
