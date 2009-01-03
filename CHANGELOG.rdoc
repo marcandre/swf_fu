@@ -1,5 +1,9 @@
 = swf_fu --- History
 
+== Version 1.0.2 - January 3, 2009
+
+* Bug fix for flashvars in dynamic method
+
 == Version 1.0.1 - January 2, 2009
 
 * File reorganization
