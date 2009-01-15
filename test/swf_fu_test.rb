@@ -63,9 +63,9 @@ class SwfFuTest < ActionView::TestCase
 
     context "with custom defaults" do
       setup do
-        test = {:flashvars=> {:xyz => "abc"}, :mode => :static, :size => "400x300"}
+        test = {:flashvars=> {:xyz => "abc", :hello => "world"}.freeze, :mode => :static, :size => "400x300"}.freeze
         @expect = swf_tag("test", test)
-        @expect_with_hello = swf_tag("test", :flashvars => {:xyz => "abc", :hello => "world"}, :mode => :static, :size => "400x300")
+        @expect_with_hello = swf_tag("test", :flashvars => {:xyz => "abc", :hello => "my friend"}, :mode => :static, :size => "400x300")
         ActionView::Base.swf_default_options = test
       end
       
@@ -74,7 +74,7 @@ class SwfFuTest < ActionView::TestCase
       end
       
       should "merge suboptions" do
-        assert_equal @expect_with_hello, swf_tag("test", :flashvars => {:hello => "world"})
+        assert_equal @expect_with_hello, swf_tag("test", :flashvars => {:hello => "my friend"}.freeze)
       end
 
       teardown { ActionView::Base.swf_default_options = {} }        

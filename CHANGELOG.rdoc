@@ -1,5 +1,11 @@
 = swf_fu --- History
 
+== Version 1.2.0 - January 14, 2009
+
+* flashvars[:id] will now default to the DOM id of the object. I didn't want to have any extra defaults than the very basic ones, but there is no easy way to get this from Flash (see http://www.actionscript.org/forums/showthread.php3?t=136044 ) and no easy way to specify that using +swf_default_options+.
+* If flashvars is a string (e.g. "myVar=myValue") it will be parsed into a hash so that the behaviour for default values apply to strings or hashes. swf_default_options[:flashvars] can also be a string and will also be parsed before being merged.
+* Small bug fix: the options passed as hashes (:flashvars, :parameters and :html_options) were changed if swf_default_options[:flashvars, ...] existed. They are now left unchanged.
+
 == Version 1.1.0 - January 3, 2009
 
 * Improved the way to specify alternate content

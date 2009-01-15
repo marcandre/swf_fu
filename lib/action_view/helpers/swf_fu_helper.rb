@@ -39,42 +39,36 @@ module ActionView #:nodoc:
       alias_method :flashobject_tag, :flashobject_tag_for_compatibility unless defined? flashobject_tag
     
   private
+      DEFAULTS = {
+        :width            => "100%",
+        :height           => "100%",
+        :flash_version    => 7,
+        :mode             => :dynamic,
+        :auto_install     => "expressInstall",
+        :alt    => <<-"EOS"
+          <a href="http://www.adobe.com/go/getflashplayer">
+        	  <img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" />
+          </a>
+        EOS
+      }.freeze
+      
       class Generator # :nodoc:
         VALID_MODES = [:static, :dynamic]
         def initialize(source, options, view)
           @view = view
           @source = view.swf_path(source)
-          @options = ActionView::Base.swf_default_options.merge(options)
+          options = ActionView::Base.swf_default_options.merge(options)
           [:html_options, :parameters, :flashvars].each do |k|
-            @options[k].merge! ActionView::Base.swf_default_options[k] rescue "merge won't work for string or nil, ignore error"
+            options[k] = convert_to_hash(options[k]).reverse_merge convert_to_hash(ActionView::Base.swf_default_options[k])
           end
-          @options.reverse_merge!(
-            :id               => source.gsub(/^.*\//, '').gsub(/\.swf$/,''),
-            :width            => "100%",
-            :height           => "100%",
-            :flash_version    => 7,
-            :parameters       => {},
-            :flashvars        => {},
-            :html_options     => {},
-            :mode             => :dynamic,
-            :auto_install     => "expressInstall",
-            :alt    => <<-"EOS"
-              <a href="http://www.adobe.com/go/getflashplayer">
-            	  <img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" />
-              </a>
-            EOS
-          )
-          @options[:div_id] ||= @options[:id]+"_div"
-          @options[:width], @options[:height] = @options[:size].scan(/^(\d*%?)x(\d*%?)$/).first if @options[:size]
-          @options[:auto_install] &&= @view.swf_path(@options[:auto_install])
-          # For some strange reason, SWFObject will only accept a string as parameters[:flashvars] and a hash as a direct argument (dynamic method)
-          # To allow both string and hash forms, we simply do our own conversion to string...
-          if @options[:flashvars].is_a?(Hash)
-            @options[:flashvars] = @options[:flashvars].map do |key_value|
-              key_value.map{|val| CGI::escape(val.to_s)}.join("=")
-            end.join("&")
-          end
-          @mode = @options.delete(:mode)
+          options.reverse_merge!(DEFAULTS)
+          options[:id] ||= source.gsub(/^.*\//, '').gsub(/\.swf$/,'')
+          options[:div_id] ||= options[:id]+"_div"
+          options[:width], options[:height] = options[:size].scan(/^(\d*%?)x(\d*%?)$/).first if options[:size]
+          options[:auto_install] &&= @view.swf_path(options[:auto_install])
+          options[:flashvars][:id] ||= options[:id]
+          @mode = options.delete(:mode)
+          @options = options
           unless VALID_MODES.include? @mode
             raise ArgumentError, "options[:mode] should be either #{VALID_MODES.join(' or ')}"
           end
@@ -90,9 +84,32 @@ module ActionView #:nodoc:
         end
         
       private
+        def convert_to_hash(s)
+          case s
+            when Hash
+              s
+            when nil
+              {}
+            when String
+              s.split("&").inject({}) do |h, kvp|
+                key, value = kvp.split("=")
+                h[key.to_sym] = CGI::unescape(value)
+                h
+              end
+            else
+              raise ArgumentError, "#{s} should be a Hash, a String or nil"
+          end
+        end
+      
+        def convert_to_string(h)
+          h.map do |key_value|
+            key_value.map{|val| CGI::escape(val.to_s)}.join("=")
+          end.join("&")
+        end
+        
         def static
           param_list = @options[:parameters].map{|k,v| %(<param name="#{k}" value="#{v}"/>) }.join("\n")
-          param_list += %(\n<param name="flashvars" value="#{@options[:flashvars]}"/>) unless @options[:flashvars].empty?
+          param_list += %(\n<param name="flashvars" value="#{convert_to_string(@options[:flashvars])}"/>) unless @options[:flashvars].empty?
           html_options = @options[:html_options].map{|k,v| %(#{k}="#{v}")}.join(" ")
           r = @view.javascript_tag(%(swfobject.registerObject("#{@options[:id]}_container", "#{@options[:flash_version]}", #{@options[:auto_install].to_json});)) + <<-"EOS"
           
@@ -116,7 +133,6 @@ module ActionView #:nodoc:
         def dynamic
           @options[:html_options] = @options[:html_options].merge(:id => @options[:id])
           @options[:parameters] = @options[:parameters].dup # don't modify the original parameters
-          @options[:parameters][:flashvars] = @options.delete :flashvars
           args = (([@source] + @options.values_at(:div_id,:width,:height,:flash_version)).map(&:to_s) + 
                   @options.values_at(:auto_install,:flashvars,:parameters,:html_options)
                  ).map(&:to_json).join(",")
