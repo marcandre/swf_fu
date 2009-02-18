@@ -10,6 +10,7 @@ module ActionView #:nodoc:
 
   module Helpers # :nodoc:
     module AssetTagHelper
+      
       # Computes the path to an swf asset in the public 'swfs' directory.
       # Full paths from the document root will be passed through.
       # Used internally by +swf_tag+ to build the swf path.
@@ -26,6 +27,7 @@ module ActionView #:nodoc:
       #     ActionController::Base.asset_host = "http://assets.example.com"
       #     image_path("logo.jpg")                         # => http://assets.example.com/images/logo.jpg
       #     swf_path("fonts/optima")                       # => http://assets.example.com/swfs/fonts/optima.swf
+      #
       def swf_path(source)
         if defined? SwfTag
           SwfTag.new(self, @controller, source).public_path

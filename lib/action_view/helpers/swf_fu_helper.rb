@@ -17,6 +17,7 @@ module ActionView #:nodoc:
       # * <tt>:javascript_class</tt> - specify a javascript class (e.g. "MyFlash") for your flash object. The initialize method will be called when the flash object is ready.
       # * <tt>:initialize</tt> - arguments to pass to the initialization method of your javascript class.
       # * <tt>:div_id</tt> - the DOM +id+ of the containing div itself. Defaults to <tt>"#{option[:id]}"_div</tt>
+      #
       def swf_tag(source, options={}, &block)
         Generator.new(source, options, self).generate(&block)
       end
@@ -33,7 +34,7 @@ module ActionView #:nodoc:
         )
         { :variables => :flashvars, :flash_id => :id }.each{|from, to| options[to] ||= options.delete(from) }
         options[:parameters][:bgcolor] ||= options.delete(:background_color)
-        swf_tag source, options
+        swf_tag(source, options)
       end
     
       alias_method :flashobject_tag, :flashobject_tag_for_compatibility unless defined? flashobject_tag
@@ -45,7 +46,7 @@ module ActionView #:nodoc:
         :flash_version    => 7,
         :mode             => :dynamic,
         :auto_install     => "expressInstall",
-        :alt    => <<-"EOS"
+        :alt    => <<-"EOS".squeeze(" ").strip.freeze
           <a href="http://www.adobe.com/go/getflashplayer">
         	  <img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" />
           </a>
@@ -111,8 +112,8 @@ module ActionView #:nodoc:
           param_list = @options[:parameters].map{|k,v| %(<param name="#{k}" value="#{v}"/>) }.join("\n")
           param_list += %(\n<param name="flashvars" value="#{convert_to_string(@options[:flashvars])}"/>) unless @options[:flashvars].empty?
           html_options = @options[:html_options].map{|k,v| %(#{k}="#{v}")}.join(" ")
-          r = @view.javascript_tag(%(swfobject.registerObject("#{@options[:id]}_container", "#{@options[:flash_version]}", #{@options[:auto_install].to_json});)) + <<-"EOS"
-          
+          r = @view.javascript_tag(%(swfobject.registerObject("#{@options[:id]}_container", "#{@options[:flash_version]}", #{@options[:auto_install].to_json});)) +
+          <<-"EOS".strip
             <div id="#{@options[:div_id]}"><object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="#{@options[:width]}" height="#{@options[:height]}" id="#{@options[:id]}_container" #{html_options}>
               <param name="movie" value="#{@source}" />
               #{param_list}
@@ -137,8 +138,7 @@ module ActionView #:nodoc:
                   @options.values_at(:auto_install,:flashvars,:parameters,:html_options)
                  ).map(&:to_json).join(",")
           r = @view.javascript_tag("swfobject.embedSWF(#{args})") 
-          r += <<-"EOS"
-        
+          r += <<-"EOS".strip
             <div id="#{@options[:div_id]}">
               #{@options[:alt]}
             </div>
@@ -161,7 +161,7 @@ module ActionView #:nodoc:
       
         def library_check
           return "" unless 'development' == ENV['RAILS_ENV']
-          @view.javascript_tag <<-"EOS"
+          @view.javascript_tag(<<-"EOS")
             if (typeof swfobject == 'undefined') {
               document.getElementById('#{@options[:div_id]}').innerHTML = '<strong>Warning:</strong> SWFObject.js was not loaded properly. Make sure you <tt>&lt;%= javascript_include_tag :defaults %></tt> or <tt>&lt;%= javascript_include_tag :swfobject %></tt>';
             }
