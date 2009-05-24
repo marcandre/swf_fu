@@ -14,10 +14,13 @@ any incompatibility. Comments and pull requests welcome: http://github.com/marca
 
 == Install
 
+If you are running a version of rails more recent than 2.0.2
+and that you have git installed (check with <tt>git --version</tt>) then:
+
   script/plugin install git://github.com/marcandre/swf_fu.git
 
-If you are still rails 2.0.2 or older, this won't work; you'll need to download
-swf_fu from http://github.com/marcandre/swf_fu and install it manually, like:
+Otherwise, this won't work; you'll can always download
+swf_fu from http://github.com/marcandre/swf_fu and then install it manually, like:
 
   script/plugin install ~/Downloads/swf_fu
 
