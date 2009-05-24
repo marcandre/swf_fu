@@ -15,7 +15,7 @@ any incompatibility. Comments and pull requests welcome: http://github.com/marca
 == Install
 
 If you are running a version of rails more recent than 2.0.2
-and that you have git installed (check with <tt>git --version</tt>) then:
+and that you have git installed (check with <q>git version</q>) then:
 
   script/plugin install git://github.com/marcandre/swf_fu.git
 

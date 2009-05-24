@@ -1,0 +1,42 @@
+---
+ README.rdoc         |    7 +++++--
+ test/test_helper.rb |    2 +-
+ 2 files changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/README.rdoc b/README.rdoc
+index 30bb7f5ea876661fe00252a88f53b5cb9e53352f..c9e46316175bf5ab8de3010a0de0a4ed2a0b26fb 100644
+--- a/README.rdoc
++++ b/README.rdoc
+@@ -14,10 +14,13 @@ any incompatibility. Comments and pull requests welcome: http://github.com/marca
+ 
+ == Install
+ 
++If you are running a version of rails more recent than 2.0.2
++and that you have git installed (check with <q>git version</q>) then:
++
+   script/plugin install git://github.com/marcandre/swf_fu.git
+ 
+-If you are still rails 2.0.2 or older, this won't work; you'll need to download
+-swf_fu from http://github.com/marcandre/swf_fu and install it manually, like:
++Otherwise, this won't work; you'll can always download
++swf_fu from http://github.com/marcandre/swf_fu and then install it manually, like:
+ 
+   script/plugin install ~/Downloads/swf_fu
+ 
+diff --git a/test/test_helper.rb b/test/test_helper.rb
+index 64a8cffe7dd8bb19df102ec20b57a3a4efc64b69..0ead84ae6f80d049efe598aa4b559fa63500690d 100644
+--- a/test/test_helper.rb
++++ b/test/test_helper.rb
+@@ -2,8 +2,8 @@ require 'test/unit'
+ require 'rubygems'
+ require 'active_support'
+ require 'active_record'
+-require 'action_controller'
+ require 'action_view'
++require 'action_controller'
+ 
+ #require File.dirname(__FILE__)+'/../../../../config/environment.rb'
+ require 'action_view/test_case'
+-- 
+1.5.6.4
+
