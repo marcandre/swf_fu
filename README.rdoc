@@ -2,14 +2,14 @@
 
 With the swf_fu plugin, rails treats your swf files like any other asset (images, javascripts, etc...).
 
-swf_fu (pronounced "swif-fu", bonus joke for french speakers) uses SWFObject 2.1 to embed swf objects in HTML and supports all its options.
+swf_fu (pronounced "swif-fu", bonus joke for french speakers) uses SWFObject 2.2 to embed swf objects in HTML and supports all its options.
 SWFObject 2 is such a nice library that Adobe now uses it as the official way to embed swf!
 SWFOBject's project can be found at http://code.google.com/p/swfobject
 
 swf_fu was inspired by FlashObject by Davide D'Agostino (http://www.lipsiasoft.com)
 and is and backward compatible with it (or can also be used together; see compatiblity notes at the end)
 
-swf_fu has been tested with rails up to v2.2.2 and has good test coverage so <tt>rake test:plugins</tt> should reveal
+swf_fu has been tested with rails up to v2.3.2 and has good test coverage so <tt>rake test:plugins</tt> should reveal
 any incompatibility. Comments and pull requests welcome: http://github.com/marcandre/swf_fu
 
 == Install
@@ -55,8 +55,9 @@ You can specify alternate content either with the options :alt => "Get Flash!" o
 * <tt>:javascript_class</tt> - specify a javascript class (e.g. "MyFlash") for your flash object. If it exists, the initialize method will be called.
 * <tt>:initialize</tt> - arguments to pass to the initialization method of your javascript class.
 * <tt>:div_id</tt> - the DOM +id+ of the containing div itself. Defaults to <tt>"#{option[:id]}"_div</tt>
+* <tt>:switch_off_auto_hide_show</tt> - switch off SWFObject's default hide/show behavior. SWFObject temporarily hides your SWF or alternative content until the library has decided which content to display. Defaults to nil.
 
-You can override these options with a global setting:
+You can override these default options with a global setting:
 
   ActionView::Base.swf_default_options = {:mode => :static}   # All swf_tag will use the static mode by default
 
@@ -95,11 +96,11 @@ If you _do_ use FlashObject, you can choose to:
 
 You can also manually remove <tt>javascripts/flashobject.js</tt>
 
-swf_fu will take over the +flashobject_tag+ and will use the new SWFObject 2.1 library.
+swf_fu will take over the +flashobject_tag+ and will use the new SWFObject 2.2 library.
 This should not have impacts as long as:
 * your swf path is absolute (e.g. "/path/to/my_flash.swf"). If it is relative, move your swf file from 'public/' to the new 'public/swfs/' asset folder
 * you include the default javascripts (otherwise you need to include 'swfobject' explicitely and stop including 'flashobject')
-* you don't use the javascript object before the page is loaded. SWFObject 2.1 makes the changes to the web page later
+* you don't use the javascript object before the page is loaded. SWFObject 2.2 makes the changes to the web page later
 * you don't rely on the +verify_file_exists+ option (it doesn't do anything anymore)
 
 In either case 1 or 2, you change existing calls to +flashobject_tag+ for +swf_tag+ at your leisure. 

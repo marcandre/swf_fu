@@ -137,7 +137,9 @@ module ActionView #:nodoc:
           args = (([@source] + @options.values_at(:div_id,:width,:height,:flash_version)).map(&:to_s) + 
                   @options.values_at(:auto_install,:flashvars,:parameters,:html_options)
                  ).map(&:to_json).join(",")
-          r = @view.javascript_tag("swfobject.embedSWF(#{args})") 
+          r = ""
+          preambule = @options[:switch_off_auto_hide_show] ? "swfobject.switchOffAutoHideShow();" : ""
+          r = @view.javascript_tag(preambule + "swfobject.embedSWF(#{args})") 
           r += <<-"EOS".strip
             <div id="#{@options[:div_id]}">
               #{@options[:alt]}
