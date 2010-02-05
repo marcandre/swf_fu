@@ -24,6 +24,7 @@ module ActionView #:nodoc:
 
       # For compatibility with the older FlashObject.
       # It modifies the given options before calling +swf_tag+.
+      # See FLASH_OBJECT.rdoc
       def flashobject_tag_for_compatibility(source, options={})
         options = options.reverse_merge(
           :auto_install     => nil,
@@ -78,13 +79,18 @@ module ActionView #:nodoc:
         def generate(&block)
           if block_given?
             @options[:alt] = @view.capture(&block)
-            @view.concat(send(@mode) + library_check, block.binding)
+            if Rails::VERSION::STRING < "2.2"
+              @view.concat(send(@mode), block.binding)
+            else
+              @view.concat(send(@mode))
+            end
           else
-            send(@mode) + library_check
+            send(@mode)
           end
         end
         
       private
+        CONCAT = ActiveSupport.const_defined?(:SafeBuffer) ? :safe_concat : :concat
         def convert_to_hash(s)
           case s
             when Hash
@@ -112,8 +118,10 @@ module ActionView #:nodoc:
           param_list = @options[:parameters].map{|k,v| %(<param name="#{k}" value="#{v}"/>) }.join("\n")
           param_list += %(\n<param name="flashvars" value="#{convert_to_string(@options[:flashvars])}"/>) unless @options[:flashvars].empty?
           html_options = @options[:html_options].map{|k,v| %(#{k}="#{v}")}.join(" ")
-          r = @view.javascript_tag(%(swfobject.registerObject("#{@options[:id]}_container", "#{@options[:flash_version]}", #{@options[:auto_install].to_json});)) +
-          <<-"EOS".strip
+          r = @view.javascript_tag(
+            %(swfobject.registerObject("#{@options[:id]}_container", "#{@options[:flash_version]}", #{@options[:auto_install].to_json});)
+          )
+          r.send CONCAT, <<-"EOS".strip
             <div id="#{@options[:div_id]}"><object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="#{@options[:width]}" height="#{@options[:height]}" id="#{@options[:id]}_container" #{html_options}>
               <param name="movie" value="#{@source}" />
               #{param_list}
@@ -127,7 +135,8 @@ module ActionView #:nodoc:
               <!--<![endif]-->
             </object></div>
           EOS
-          r += @view.javascript_tag extend_js if @options[:javascript_class]
+          r << @view.javascript_tag(extend_js) if @options[:javascript_class]
+          r.send CONCAT, library_check
           r
         end
       
@@ -137,15 +146,15 @@ module ActionView #:nodoc:
           args = (([@source] + @options.values_at(:div_id,:width,:height,:flash_version)).map(&:to_s) + 
                   @options.values_at(:auto_install,:flashvars,:parameters,:html_options)
                  ).map(&:to_json).join(",")
-          r = ""
           preambule = @options[:switch_off_auto_hide_show] ? "swfobject.switchOffAutoHideShow();" : ""
           r = @view.javascript_tag(preambule + "swfobject.embedSWF(#{args})") 
-          r += <<-"EOS".strip
+          r.send CONCAT, <<-"EOS".strip
             <div id="#{@options[:div_id]}">
               #{@options[:alt]}
             </div>
           EOS
-          r += @view.javascript_tag("swfobject.addDomLoadEvent(function(){#{extend_js}})") if @options[:javascript_class]
+          r << @view.javascript_tag("swfobject.addDomLoadEvent(function(){#{extend_js}})") if @options[:javascript_class]
+          r.send CONCAT, library_check
           r
         end
       
@@ -165,7 +174,7 @@ module ActionView #:nodoc:
           return "" unless 'development' == ENV['RAILS_ENV']
           @view.javascript_tag(<<-"EOS")
             if (typeof swfobject == 'undefined') {
-              document.getElementById('#{@options[:div_id]}').innerHTML = '<strong>Warning:</strong> SWFObject.js was not loaded properly. Make sure you <tt>&lt;%= javascript_include_tag :defaults %></tt> or <tt>&lt;%= javascript_include_tag :swfobject %></tt>';
+              document.getElementById('#{@options[:div_id]}').innerHTML = '<strong>Warning:</strong> SWFObject.js was not loaded properly. Make sure you <tt>&lt;%= javascript_include_tag :defaults %&gt;</tt> or <tt>&lt;%= javascript_include_tag :swfobject %&gt;</tt>';
             }
           EOS
         end

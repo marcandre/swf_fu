@@ -1,41 +1,40 @@
-= swf_fu
+= +swf_fu+
 
-With the swf_fu plugin, rails treats your swf files like any other asset (images, javascripts, etc...).
+With the +swf_fu+ plugin, rails treats your swf files like any other asset (images, javascripts, etc...).
 
-swf_fu (pronounced "swif-fu", bonus joke for french speakers) uses SWFObject 2.2 to embed swf objects in HTML and supports all its options.
++swf_fu+ (pronounced "swif-fu", bonus joke for french speakers) uses SWFObject 2.2 to embed swf objects in HTML and supports all its options.
 SWFObject 2 is such a nice library that Adobe now uses it as the official way to embed swf!
-SWFOBject's project can be found at http://code.google.com/p/swfobject
+SWFObject's project can be found at http://code.google.com/p/swfobject
 
-swf_fu was inspired by FlashObject by Davide D'Agostino (http://www.lipsiasoft.com)
-and is and backward compatible with it (or can also be used together; see compatiblity notes at the end)
-
-swf_fu has been tested with rails up to v2.3.2 and has good test coverage so <tt>rake test:plugins</tt> should reveal
-any incompatibility. Comments and pull requests welcome: http://github.com/marcandre/swf_fu
++swf_fu+ has been tested with rails v2.0 up to v3.0b and has decent test coverage so <tt>rake test:plugins</tt> should reveal any incompatibility. Comments and pull requests welcome: http://github.com/marcandre/swf_fu
 
 == Install
 
-If you are running a version of rails more recent than 2.0.2
-and that you have git installed (check with <q>git version</q>) then:
+Assuming you have git[http://git-scm.com/] installed (check with <q>git version</q>), it is easy to install from your applications directory:
 
-  script/plugin install git://github.com/marcandre/swf_fu.git
+  rails plugin install git://github.com/marcandre/swf_fu.git   # rails 3
 
-Otherwise, this won't work; you'll can always download
-swf_fu from http://github.com/marcandre/swf_fu and then install it manually, like:
+  script/plugin install git://github.com/marcandre/swf_fu.git  # rails 2 (starting at 2.0.2)
 
-  script/plugin install ~/Downloads/swf_fu
+For older versions of +rails+ or without +git+, you can always download
++swf_fu+ from github[http://github.com/marcandre/swf_fu/archives/master] and then install it manually:
+
+  rails plugin install ~/Download/swf_fu    # rails 3
+
+  script/plugin install ~/Downloads/swf_fu  # rails 2.x
 
 == Usage
 
 === Embedding in HTML
 
-To embed a swf file, use swf_tag:
+To embed a swf file, use +swf_tag+:
   <%= swf_tag "i_like_flashing" %>
 
 Exactly like images and javascripts, +swf_tag+ will use +swf_path+
 to determine the path of the swf file; it will assume it is in <tt>/public/swfs/</tt>
 unless specified otherwise and it will add the ".swf" extension automatically.
 
-You can specify alternate content either with the options :alt => "Get Flash!" or you can use swf_tag as a block:
+You can specify alternate content either with the options <q>:alt => "Get Flash!"</q> or you can use +swf_tag+ as a block:
 
   <% swf_tag "i_like_flashing" do %>
     Get Flash
@@ -49,9 +48,9 @@ You can specify alternate content either with the options :alt => "Get Flash!" o
 * <tt>:mode</tt> - Either :dynamic (default) or :static. Refer to SWFObject's doc[http://code.google.com/p/swfobject/wiki/documentation#Should_I_use_the_static_or_dynamic_publishing_method?]
 * <tt>:flashvars</tt> - a Hash of variables that are passed to the swf. Can also be a string like <tt>"foo=bar&hello=world"</tt>. Defaults to <tt>{:id => the DOM id}</tt>
 * <tt>:parameters</tt> - a Hash of configuration parameters for the swf. See Adobe's doc[http://kb.adobe.com/selfservice/viewContent.do?externalId=tn_12701#optional]
-* <tt>:alt</tt> - HTML text that is displayed when the Flash player is not available. Defaults to a "Get Flash" image pointing to Adobe Flash's installation page. This can also be specified as a block (see embedding section)
+* <tt>:alt</tt> - HTML text that is displayed when the Flash player is not available. Defaults to a "Get Flash" image pointing to Adobe Flash's installation page. This can also be specified as a block (see embedding section). In Rails 3, this text is _assumed_ to be HTML, so there is no need to call +html_safe+ on it.
 * <tt>:flash_version</tt> - the version of the Flash player that is required (e.g. "7" (default) or "8.1.0")
-* <tt>:auto_install</tt> - a swf file that will upgrade flash player if needed (defaults to "expressInstall" which was installed by swf_fu)
+* <tt>:auto_install</tt> - a swf file that will upgrade flash player if needed (defaults to "expressInstall" which was installed by +swf_fu+)
 * <tt>:javascript_class</tt> - specify a javascript class (e.g. "MyFlash") for your flash object. If it exists, the initialize method will be called.
 * <tt>:initialize</tt> - arguments to pass to the initialization method of your javascript class.
 * <tt>:div_id</tt> - the DOM +id+ of the containing div itself. Defaults to <tt>"#{option[:id]}"_div</tt>
@@ -63,7 +62,7 @@ You can override these default options with a global setting:
 
 === Javascript
 
-swf_fu will add 'swfobject' to the list of default javascript files. If you don't include
++swf_fu+ will add 'swfobject' to the list of default javascript files. If you don't include
 the default javascripts, a simple <tt>javascript_include "swfobject"</tt> is needed.
 
 === swf_path
@@ -81,37 +80,5 @@ It takes into account the global setting +asset_host+, like any other asset:
   ActionController::Base.asset_host = "http://assets.example.com"
   image_path("logo.jpg")                         => http://assets.example.com/images/logo.jpg
   swf_path("fonts/optima")                       => http://assets.example.com/swfs/fonts/optima.swf
-  
-== Compatibility with FlashObject
 
-If you _don't_ currently use FlashObject, congrats, you're done reading!
-
-If you _do_ use FlashObject, you can choose to:
-
-1) keep both. They won't interfere and +flashobject_tag+ will continue to use the older SWFObject 1.5 library.
-
-2) remove FlashObject:
-
-  script/plugin remove flashobject_helper
-
-You can also manually remove <tt>javascripts/flashobject.js</tt>
-
-swf_fu will take over the +flashobject_tag+ and will use the new SWFObject 2.2 library.
-This should not have impacts as long as:
-* your swf path is absolute (e.g. "/path/to/my_flash.swf"). If it is relative, move your swf file from 'public/' to the new 'public/swfs/' asset folder
-* you include the default javascripts (otherwise you need to include 'swfobject' explicitely and stop including 'flashobject')
-* you don't use the javascript object before the page is loaded. SWFObject 2.2 makes the changes to the web page later
-* you don't rely on the +verify_file_exists+ option (it doesn't do anything anymore)
-
-In either case 1 or 2, you change existing calls to +flashobject_tag+ for +swf_tag+ at your leisure. 
-The interface is similar and the main differences are some options name changes:
-  :flash_id  => :id
-  :variables => :flashvars
-  :background_color => options[:parameters][:bgcolor]
-
-Moreover, the following defaults are gone:
-  :flashvars[:lzproxied]
-  :parameters[:scale] 
-  :parameters[:bgcolor]
-
-Copyright (c) 2008 Marc-André Lafortune, released under the BSD license
+Copyright (c) 2010 Marc-André Lafortune, released under the BSD license

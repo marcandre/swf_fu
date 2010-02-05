@@ -1,5 +1,5 @@
 # swf_fu plugin for rails
-# Copyright (c) 2008, Marc-André Lafortune.
+# Copyright (c) 2010, Marc-André Lafortune.
 # All rights reserved.
 # Inspired by FlashObject by Davide D'Agostino aka DAddYE (http://www.lipsiasoft.com)
 # Uses SWFObject.js 2.1 (http://code.google.com/p/swfobject)

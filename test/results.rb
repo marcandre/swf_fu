@@ -1,7 +1,7 @@
 DYNAMIC_RESULT = <<'EOS'
 <script type="text/javascript">
 //<![CDATA[
-swfobject.embedSWF("/swfs/mySwf.swf","mySwf_div","456","123","7","/swfs/expressInstall.swf",{"myVar": "value 1 \u003E 2", "id": "mySwf"},{"play": true},{"id": "mySwf"})
+swfobject.embedSWF("/swfs/mySwf.swf","mySwf_div","456","123","7","/swfs/expressInstall.swf",{"myVar":"value 1 \u003E 2","id":"mySwf"},{"play":true},{"id":"mySwf"})
 //]]>
 </script><div id="mySwf_div">
 <a href="http://www.adobe.com/go/getflashplayer">
@@ -9,7 +9,7 @@ swfobject.embedSWF("/swfs/mySwf.swf","mySwf_div","456","123","7","/swfs/expressI
 </a>
 </div><script type="text/javascript">
 //<![CDATA[
-swfobject.addDomLoadEvent(function(){Object.extend($('mySwf'), SomeClass.prototype).initialize({"be": "good"})})
+swfobject.addDomLoadEvent(function(){Object.extend($('mySwf'), SomeClass.prototype).initialize({"be":"good"})})
 //]]>
 </script>
 EOS
@@ -36,7 +36,7 @@ swfobject.registerObject("mySwf_container", "7", "/swfs/expressInstall.swf");
 <!--<![endif]-->
 </object></div><script type="text/javascript">
 //<![CDATA[
-Object.extend($('mySwf'), SomeClass.prototype).initialize({"be": "good"})
+Object.extend($('mySwf'), SomeClass.prototype).initialize({"be":"good"})
 //]]>
 </script>
 EOS

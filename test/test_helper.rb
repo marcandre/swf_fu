@@ -1,7 +1,11 @@
 require 'test/unit'
 require 'rubygems'
+gem 'activesupport', '~> 2.3'
 require 'active_support'
+gem 'activerecord', '~> 2.3'
 require 'active_record'
+gem 'actionpack', '~> 2.3'
+require 'active_support'
 require 'action_view'
 require 'action_controller'
 
