@@ -53,12 +53,19 @@ You can specify alternate content either with the options <q>:alt => "Get Flash!
 * <tt>:auto_install</tt> - a swf file that will upgrade flash player if needed (defaults to "expressInstall" which was installed by +swf_fu+)
 * <tt>:javascript_class</tt> - specify a javascript class (e.g. "MyFlash") for your flash object. If it exists, the initialize method will be called.
 * <tt>:initialize</tt> - arguments to pass to the initialization method of your javascript class.
-* <tt>:div_id</tt> - the DOM +id+ of the containing div itself. Defaults to <tt>"#{option[:id]}"_div</tt>
+* <tt>:div_id</tt> - the DOM +id+ of the containing div itself. Defaults to <tt>"#{option[:id]}_div"</tt>
 * <tt>:switch_off_auto_hide_show</tt> - switch off SWFObject's default hide/show behavior. SWFObject temporarily hides your SWF or alternative content until the library has decided which content to display. Defaults to nil.
 
 You can override these default options with a global setting:
 
   ActionView::Base.swf_default_options = {:mode => :static}   # All swf_tag will use the static mode by default
+
+Any of these options can be a +Proc+, in which case it will be called each time swf_tag is called.
+
+For example, the following will generate unique IDs:
+
+  my_swf_counter = 0
+  ActionView::Base.swf_default_options[:id] = Proc.new{"swf_unique_id_#{my_swf_counter+=1}"}
 
 === Javascript
 
@@ -69,16 +76,16 @@ the default javascripts, a simple <tt>javascript_include "swfobject"</tt> is nee
 
 +swf_tag+ implements and relies on +swf_path+ which behaves in a similar fashion to +image_path+, +javascript_path+, etc...:
 
-  swf_path("example")                            => /swfs/example.swf
-  swf_path("example.swf")                        => /swfs/example.swf
-  swf_path("fonts/optima")                       => /swfs/fonts/optima.swf
-  swf_path("/fonts/optima")                      => /fonts/optima.swf
-  swf_path("http://www.example.com/game.swf")    => http://www.example.com/game.swf
+  swf_path("example")                            => "/swfs/example.swf"
+  swf_path("example.swf")                        => "/swfs/example.swf"
+  swf_path("fonts/optima")                       => "/swfs/fonts/optima.swf"
+  swf_path("/fonts/optima")                      => "/fonts/optima.swf"
+  swf_path("http://www.example.com/game.swf")    => "http://www.example.com/game.swf"
 
 It takes into account the global setting +asset_host+, like any other asset:
 
   ActionController::Base.asset_host = "http://assets.example.com"
-  image_path("logo.jpg")                         => http://assets.example.com/images/logo.jpg
-  swf_path("fonts/optima")                       => http://assets.example.com/swfs/fonts/optima.swf
+  image_path("logo.jpg")                         => "http://assets.example.com/images/logo.jpg"
+  swf_path("fonts/optima")                       => "http://assets.example.com/swfs/fonts/optima.swf""
 
 Copyright (c) 2010 Marc-André Lafortune, released under the BSD license

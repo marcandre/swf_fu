@@ -1,5 +1,9 @@
 = swf_fu --- History
 
+== Version 1.4.0 - May 8, 2010
+
+* Any option can be a block, in which case it is called (with the source swf passed as argument)
+
 == Version 1.3.1 - February 5, 2010
 
 * Improved compatibility with Rails 3.0: swf_tag now outputs html_safe content.

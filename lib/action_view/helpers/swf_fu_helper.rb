@@ -60,6 +60,9 @@ module ActionView #:nodoc:
           @view = view
           @source = view.swf_path(source)
           options = ActionView::Base.swf_default_options.merge(options)
+          options.each do |key, value|
+            options[key] = value.call(source) if value.respond_to?(:call)
+          end
           [:html_options, :parameters, :flashvars].each do |k|
             options[k] = convert_to_hash(options[k]).reverse_merge convert_to_hash(ActionView::Base.swf_default_options[k])
           end
@@ -91,6 +94,7 @@ module ActionView #:nodoc:
         
       private
         CONCAT = ActiveSupport.const_defined?(:SafeBuffer) ? :safe_concat : :concat
+        puts CONCAT
         def convert_to_hash(s)
           case s
             when Hash
