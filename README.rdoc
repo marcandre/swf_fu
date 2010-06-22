@@ -10,7 +10,7 @@ SWFObject's project can be found at http://code.google.com/p/swfobject
 
 == Install
 
-Assuming you have git[http://git-scm.com/] installed (check with <q>git version</q>), it is easy to install from your applications directory:
+Assuming you have git[http://git-scm.com/] installed (check with <tt>git version</tt>), it is easy to install from your applications directory:
 
   rails plugin install git://github.com/marcandre/swf_fu.git   # rails 3
 
@@ -34,7 +34,7 @@ Exactly like images and javascripts, +swf_tag+ will use +swf_path+
 to determine the path of the swf file; it will assume it is in <tt>/public/swfs/</tt>
 unless specified otherwise and it will add the ".swf" extension automatically.
 
-You can specify alternate content either with the options <q>:alt => "Get Flash!"</q> or you can use +swf_tag+ as a block:
+You can specify alternate content either with the options <tt>:alt => "Get Flash!"</tt> or you can use +swf_tag+ as a block:
 
   <% swf_tag "i_like_flashing" do %>
     Get Flash
