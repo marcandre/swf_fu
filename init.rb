@@ -7,4 +7,8 @@ ActionView::Helpers.class_eval  { include ActionView::Helpers::SwfFuHelper } # F
 ActionView::Base.class_eval     { include ActionView::Helpers::SwfFuHelper } # ...and for older ones
 ActionView::TestCase.class_eval { include ActionView::Helpers::SwfFuHelper } if defined? ActionView::TestCase # ...for tests in older versions
 
-ActionView::Helpers::AssetTagHelper.register_javascript_include_default 'swfobject'
+begin
+  ActionView::Helpers::AssetTagHelper.register_javascript_expansion :default => ["swfobject"]
+rescue NoMethodError # I think this might fail in Rails 2.1.x
+  ActionView::Helpers::AssetTagHelper.register_javascript_include_default 'swfobject'
+end
