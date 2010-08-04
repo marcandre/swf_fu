@@ -68,7 +68,9 @@ module ActionView #:nodoc:
           end
           options.reverse_merge!(DEFAULTS)
           options[:id] ||= source.gsub(/^.*\//, '').gsub(/\.swf$/,'')
+          options[:id] = force_to_valid_id(options[:id])
           options[:div_id] ||= options[:id]+"_div"
+          options[:div_id] = force_to_valid_id(options[:div_id])
           options[:width], options[:height] = options[:size].scan(/^(\d*%?)x(\d*%?)$/).first if options[:size]
           options[:auto_install] &&= @view.swf_path(options[:auto_install])
           options[:flashvars][:id] ||= options[:id]
@@ -77,6 +79,12 @@ module ActionView #:nodoc:
           unless VALID_MODES.include? @mode
             raise ArgumentError, "options[:mode] should be either #{VALID_MODES.join(' or ')}"
           end
+        end
+
+        def force_to_valid_id(id)
+          id = id.gsub /[^A-Za-z0-9\-_]/, "_" # HTML id can only contain these characters
+          id = "swf_" + id unless id =~ /^[A-Z]/i # HTML id must start with alpha
+          id
         end
 
         def generate(&block)
