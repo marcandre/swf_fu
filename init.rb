@@ -1,3 +1,4 @@
+ActionView::Helpers::AssetTagHelper rescue require 'action_view/helpers/asset_tag_helper' # Might be needed in some testing environments
 require File.dirname(__FILE__) + "/lib/action_view/helpers/swf_fu_helper"
 require File.dirname(__FILE__) + "/lib/action_view/helpers/asset_tag_helper/swf_asset"
 
