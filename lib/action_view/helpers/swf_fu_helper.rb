@@ -90,7 +90,9 @@ module ActionView #:nodoc:
         def generate(&block)
           if block_given?
             @options[:alt] = @view.capture(&block)
-            if Rails::VERSION::STRING < "2.2"
+            if Rails::VERSION::STRING >= "3.0"
+              send(@mode)
+            elsif Rails::VERSION::STRING < "2.2"
               @view.concat(send(@mode), block.binding)
             else
               @view.concat(send(@mode))
