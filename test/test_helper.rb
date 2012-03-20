@@ -1,20 +1,12 @@
-require 'test/unit'
-require 'rubygems'
-gem 'activesupport', '~> 2.3'
-require 'active_support'
-gem 'activerecord', '~> 2.3'
-require 'active_record'
-gem 'actionpack', '~> 2.3'
-require 'active_support'
-require 'action_view'
-require 'action_controller'
+# Configure Rails Environment
+ENV["RAILS_ENV"] = "test"
 
-#require File.dirname(__FILE__)+'/../../../../config/environment.rb'
-require 'action_view/test_case'
-require "action_controller/test_process"
-require 'shoulda'
-require File.dirname(__FILE__) + '/../init'
+require File.expand_path("../dummy/config/environment.rb",  __FILE__)
+require "rails/test_help"
+require "shoulda-context"
 
-def assert_starts_with(start, what)
-  assert what.starts_with?(start), "#{what} does not start with #{start}"
-end
+Rails.backtrace_cleaner.remove_silencers!
+
+# Load support files
+Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
+

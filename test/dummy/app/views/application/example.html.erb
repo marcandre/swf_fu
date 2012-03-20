@@ -1,0 +1,7 @@
+A very simple example of communication javascript <-> flash:
+<hr/>
+<%= swf_tag("example", :width => 400, :height => 300, :mode => :dynamic, :id => "my_flash", :flashvars => {:message => 'Hello, World!'}, :parameters => {:allowScriptAccess => "always", :scale => "showall"}, :javascript_class => "ExampleClass") %>
+<hr/>
+
+<button onclick = "$('#my_flash')[0].sendFlash('Hello from js...')">Say Hello!</button>
+<button onclick = "$('#my_flash')[0].say('hi!')">Use javascript class to say hi!</button>

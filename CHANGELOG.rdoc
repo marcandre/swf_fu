@@ -1,5 +1,9 @@
 = swf_fu --- History
 
+== Version 2.0.0 - March 20, 2012
+
+* Refactored in an engine. Rails 3.1+ compatibility only.
+
 == Version 1.4.0 - May 8, 2010
 
 * Any option can be a block, in which case it is called (with the source swf passed as argument)
