@@ -6,9 +6,13 @@ With the +swf_fu+ plugin, rails treats your swf files like any other asset (imag
 SWFObject 2 is such a nice library that Adobe now uses it as the official way to embed swf!
 SWFObject's project can be found at http://code.google.com/p/swfobject
 
-Version 2 of +swf_fu+ is an engine for Rails 3.1+ and Ruby 1.8.7+. Use version 1.x for previous versions of Rails.
-
 Comments and pull requests welcome: http://github.com/marcandre/swf_fu
+
+== Compatibility
+
+Version 2 of +swf_fu+ is an engine for Rails 3.1+ and Ruby 1.8.7+.
+
+Version 1.x was a plugin for previous versions of Rails and should not be used with Rails 3.1+. If you are upgrading to Rails 3.1, remove the plugin!
 
 == Install
 
