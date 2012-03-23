@@ -100,7 +100,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  coffee-script
   jquery-rails
   shoulda-context
   sqlite3

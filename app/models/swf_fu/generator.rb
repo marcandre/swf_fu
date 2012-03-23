@@ -104,8 +104,8 @@ module SwfFu
       @options[:html_options] = @options[:html_options].merge(:id => @options[:id])
       @options[:parameters] = @options[:parameters].dup # don't modify the original parameters
       args = convert_to_escaped_arguments(@source,
-                                          *@options.values_at(:div_id,:width,:height,:flash_version).map(&:to_s), 
-                                          *@options.values_at(:auto_install,:flashvars,:parameters,:html_options)
+                                          *(@options.values_at(:div_id,:width,:height,:flash_version).map(&:to_s) +
+                                            @options.values_at(:auto_install,:flashvars,:parameters,:html_options))
                                           )
 
       preambule = @options[:switch_off_auto_hide_show] ? "swfobject.switchOffAutoHideShow();" : ""
