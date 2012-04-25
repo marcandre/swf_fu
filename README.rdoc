@@ -6,18 +6,18 @@ With the +swf_fu+ plugin, rails treats your swf files like any other asset (imag
 SWFObject 2 is such a nice library that Adobe now uses it as the official way to embed swf!
 SWFObject's project can be found at http://code.google.com/p/swfobject
 
-+swf_fu+ has been tested with rails v2.0 up to v3.0b and has decent test coverage so <tt>rake test:plugins</tt> should reveal any incompatibility. Comments and pull requests welcome: http://github.com/marcandre/swf_fu
++swf_fu+ has been tested with rails v2.0 up to v3.0 and has decent test coverage so <tt>rake test:plugins</tt> should reveal any incompatibility. For Rails 3.1, use the gem[http://github.com/marcandre/swf_fu] instead! Comments and pull requests welcome: http://github.com/marcandre/swf_fu
 
 == Install
 
 Assuming you have git[http://git-scm.com/] installed (check with <tt>git version</tt>), it is easy to install from your applications directory:
 
-  rails plugin install git://github.com/marcandre/swf_fu.git   # rails 3
+  rails plugin install git://github.com/marcandre/swf_fu.git -r v1.x   # rails 3
 
-  script/plugin install git://github.com/marcandre/swf_fu.git  # rails 2 (starting at 2.0.2)
+  script/plugin install git://github.com/marcandre/swf_fu.git -r v1.x  # rails 2 (starting at 2.0.2)
 
 For older versions of +rails+ or without +git+, you can always download
-+swf_fu+ from github[http://github.com/marcandre/swf_fu/archives/master] and then install it manually:
++swf_fu+ from github[http://github.com/marcandre/swf_fu/archives/v1.x] and then install it manually:
 
   rails plugin install ~/Download/swf_fu    # rails 3
 
