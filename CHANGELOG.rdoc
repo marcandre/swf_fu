@@ -1,5 +1,9 @@
 = swf_fu --- History
 
+== Version 2.0.2 - April 25, 2012
+
+* Fix dependency on Rails 3.1+ and Readme
+
 == Version 2.0.1 - March 23, 2012
 
 * Fix for Ruby 1.8

@@ -12,7 +12,7 @@ Comments and pull requests welcome: http://github.com/marcandre/swf_fu
 
 Version 2 of +swf_fu+ is an engine for Rails 3.1+ and Ruby 1.8.7+.
 
-Version 1.x was a plugin for previous versions of Rails and should not be used with Rails 3.1+. If you are upgrading to Rails 3.1, remove the plugin!
+Version 1.x was a plugin for previous versions of Rails and should not be used with Rails 3.1+. If you want to use it, checkout the v1.x branch[https://github.com/marcandre/swf_fu/tree/v1.x]. If you are upgrading to Rails 3.1+, remove the plugin!
 
 == Install
 
