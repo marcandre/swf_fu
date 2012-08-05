@@ -31,14 +31,18 @@ module SwfFuHelper
   #     swf_path("fonts/optima")                       # => /swfs/fonts/optima.swf
   #     swf_path("/fonts/optima")                      # => /fonts/optima.swf
   #     swf_path("http://www.example.com/game.swf")    # => http://www.example.com/game.swf
-  #   
+  #
   # It takes into account the global setting +asset_host+, like any other asset:
-  #   
+  #
   #     ActionController::Base.asset_host = "http://assets.example.com"
   #     image_path("logo.jpg")                         # => http://assets.example.com/images/logo.jpg
   #     swf_path("fonts/optima")                       # => http://assets.example.com/swfs/fonts/optima.swf
   def swf_path(source)
-    asset_paths.compute_public_path(source, 'swfs', :ext => 'swf')
+    if respond_to? :path_to_asset
+      path_to_asset(source, :ext => 'swf')
+    else
+      asset_paths.compute_public_path(source, 'swfs', :ext => 'swf')
+    end
   end
   alias_method :path_to_swf, :swf_path # aliased to avoid conflicts with an image_path named route
 

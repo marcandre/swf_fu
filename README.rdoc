@@ -79,9 +79,9 @@ For example, the following will generate unique IDs:
 
 +swf_tag+ implements and relies on +swf_path+ which behaves in a similar fashion to +image_path+, +javascript_path+, etc...:
 
-  swf_path("example")                            => "/swfs/example.swf"
-  swf_path("example.swf")                        => "/swfs/example.swf"
-  swf_path("fonts/optima")                       => "/swfs/fonts/optima.swf"
+  swf_path("example")                            => "/swfs/example.swf" or "/assets/example.swf"
+  swf_path("example.swf")                        => "/swfs/example.swf" or "/assets/example.swf"
+  swf_path("fonts/optima")                       => "/swfs/fonts/optima.swf" or "/assets/fonts/optima.swf"
   swf_path("/fonts/optima")                      => "/fonts/optima.swf"
   swf_path("http://www.example.com/game.swf")    => "http://www.example.com/game.swf"
 
