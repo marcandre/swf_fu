@@ -91,4 +91,4 @@ It takes into account the global setting +asset_host+, like any other asset:
   image_path("logo.jpg")                         => "http://assets.example.com/images/logo.jpg"
   swf_path("fonts/optima")                       => "http://assets.example.com/swfs/fonts/optima.swf"
 
-Copyright (c) 2010-2012 Marc-André Lafortune, released under the BSD license
+Copyright (c) 2010-2013 Marc-André Lafortune, released under the BSD license
