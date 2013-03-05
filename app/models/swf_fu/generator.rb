@@ -11,7 +11,7 @@ module SwfFu
       </a>
     EOS
   }.freeze
-  
+
   class Generator # :nodoc:
     VALID_MODES = [:static, :dynamic]
     def initialize(source, options, view)
@@ -49,7 +49,7 @@ module SwfFu
       @options[:alt] = @view.capture(&block) if block_given?
       send(@mode)
     end
-    
+
   private
     def convert_to_hash(s)
       case s
@@ -67,13 +67,13 @@ module SwfFu
           raise ArgumentError, "#{s} should be a Hash, a String or nil"
       end
     end
-  
+
     def convert_to_string(h)
       h.map do |key_value|
         key_value.map{|val| CGI::escape(val.to_s)}.join("=")
       end.join("&")
     end
-    
+
     def static
       param_list = @options[:parameters].map{|k,v| %(<param name="#{k}" value="#{v}"/>) }.join("\n")
       param_list += %(\n<param name="flashvars" value="#{convert_to_string(@options[:flashvars])}"/>) unless @options[:flashvars].empty?
@@ -99,7 +99,7 @@ module SwfFu
       r << library_check
       r
     end
-  
+
     def dynamic
       @options[:html_options] = @options[:html_options].merge(:id => @options[:id])
       @options[:parameters] = @options[:parameters].dup # don't modify the original parameters
@@ -126,7 +126,7 @@ module SwfFu
       args = [args] unless args.is_a?(Array)
       "SwfFu.setup($('##{@options[:id]}')[0], #{@options[:javascript_class]}, [#{convert_to_escaped_arguments(*args)}])"
     end
-  
+
     def library_check
       return "" unless 'development' == ENV['RAILS_ENV']
       @view.javascript_tag(<<-"EOS")
