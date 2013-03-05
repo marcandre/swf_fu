@@ -62,7 +62,8 @@ class SwfTagTest < ActionView::TestCase
     end
 
     should "produce the expected code" do
-      assert_same_stripped STATIC_RESULT, swf_tag("mySwf", COMPLEX_OPTIONS.merge(:html_options => {:class => "lots"}.freeze).freeze)
+      assert_same_stripped STATIC_RESULT, swf_tag("mySwf", COMPLEX_OPTIONS.merge(:html_options => {:class => "lots"}.freeze).freeze),
+        [%q[value="id=mySwf&myVar=value+1+%3E+2"], %q[value="myVar=value+1+%3E+2&id=mySwf"]]
     end
 
     teardown { ActionView::Base.swf_default_options = {} }
@@ -70,7 +71,8 @@ class SwfTagTest < ActionView::TestCase
 
   context "with dynamic mode" do
     should "produce the expected code" do
-      assert_same_stripped DYNAMIC_RESULT, swf_tag("mySwf", COMPLEX_OPTIONS)
+      assert_same_stripped DYNAMIC_RESULT, swf_tag("mySwf", COMPLEX_OPTIONS),
+        [%q[{"id":"mySwf","myVar":"value 1 \u003E 2"}], %q[{"myVar":"value 1 \u003E 2","id":"mySwf"}]]
     end
 
   end
