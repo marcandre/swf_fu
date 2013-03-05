@@ -4,8 +4,8 @@ DYNAMIC_RESULT = <<'EOS'
 //<![CDATA[
 swfobject.embedSWF("/swfs/mySwf.swf","mySwf_div","456","123","7","/swfs/expressInstall.swf",{"myVar":"value 1 \u003E 2","id":"mySwf"},{"play":true},{"id":"mySwf"})
 //]]>
-</script><div id="mySwf_div"><a href="http://www.adobe.com/go/getflashplayer">
-<img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" />
+</script><div id="mySwf_div"><a href="//www.adobe.com/go/getflashplayer">
+<img src="//www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" />
 </a></div><script type="text/javascript">
 //<![CDATA[
 swfobject.addDomLoadEvent(function(){SwfFu.setup($('#mySwf')[0], SomeClass, [{"be":"good"}])})
@@ -27,8 +27,8 @@ swfobject.registerObject("mySwf_container", "7", "/swfs/expressInstall.swf");
 <param name="play" value="true"/>
 <param name="flashvars" value="myVar=value+1+%3E+2&id=mySwf"/>
 <!--<![endif]-->
-<a href="http://www.adobe.com/go/getflashplayer">
-<img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" />
+<a href="//www.adobe.com/go/getflashplayer">
+<img src="//www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" />
 </a>
 <!--[if !IE]>-->
 </object>

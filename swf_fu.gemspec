@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.version     = SwfFu::VERSION
   s.authors     = ["Marc-André Lafortune"]
   s.email       = ["github@marc-andre.ca"]
-  s.homepage    = "http://github.com/marcandre/swf_fu"
+  s.homepage    = "https://github.com/marcandre/swf_fu"
   s.summary     = "Rails.supported_asset_types << 'swf'"
   s.description = "Treat your swf files like other assets"
 

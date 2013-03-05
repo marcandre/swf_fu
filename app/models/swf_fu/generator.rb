@@ -6,8 +6,8 @@ module SwfFu
     :mode             => :dynamic,
     :auto_install     => "expressInstall",
     :alt    => <<-"EOS".squeeze(" ").strip.freeze
-      <a href="http://www.adobe.com/go/getflashplayer">
-        <img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" />
+      <a href="//www.adobe.com/go/getflashplayer">
+        <img src="//www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" />
       </a>
     EOS
   }.freeze
@@ -109,7 +109,7 @@ module SwfFu
                                           )
 
       preambule = @options[:switch_off_auto_hide_show] ? "swfobject.switchOffAutoHideShow();" : ""
-      r = @view.javascript_tag(preambule + "swfobject.embedSWF(#{args})") 
+      r = @view.javascript_tag(preambule + "swfobject.embedSWF(#{args})")
       r << @view.content_tag("div", @options[:alt].html_safe, :id => @options[:div_id])
       r << @view.javascript_tag("swfobject.addDomLoadEvent(function(){#{extend_js}})") if @options[:javascript_class]
       r << library_check
