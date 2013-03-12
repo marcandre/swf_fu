@@ -1,4 +1,4 @@
-= +swf_fu+ {<img src="https://travis-ci.org/marcandre/swf_fu.png?branch=master">}[https://travis-ci.org/marcandre/swf_fu] {<img src="https://badge.fury.io/rb/swf_fu.png" alt="Gem Version" />}[http://badge.fury.io/rb/swf_fu]
+= +swf_fu+ {<img src="https://travis-ci.org/marcandre/swf_fu.png?branch=master">}[https://travis-ci.org/marcandre/swf_fu] {<img src="https://badge.fury.io/rb/swf_fu.png" alt="Gem Version" />}[http://badge.fury.io/rb/swf_fu] {<img alt='Click here to lend your support to: swf_fu and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/2619.png?skin_name=chrome' border='0'}[http://www.pledgie.com/campaigns/2619]
 
 With the +swf_fu+ plugin, rails treats your swf files like any other asset (images, javascripts, etc...).
 
